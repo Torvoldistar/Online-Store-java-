@@ -11,7 +11,7 @@ public interface IProductService {
 
     Product create(String name, int price, String comments);
 
-    void update(Product item);
+    void update(Product product);
 
     boolean delete(long id);
 }
