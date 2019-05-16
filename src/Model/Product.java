@@ -54,6 +54,7 @@ public class Product {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + name.hashCode();
+        result = 31 * result + price;
         result = 31 * result + comments.hashCode();
         return result;
     }
