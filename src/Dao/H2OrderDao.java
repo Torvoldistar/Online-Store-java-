@@ -1,6 +1,6 @@
 package Dao;
 
-import Model.Product;
+import Model.Order;
 import exception.ServiceException;
 
 import javax.sql.DataSource;
@@ -8,52 +8,52 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class H2ProductDao implements ProductDao {
+public class H2OrderDao implements OrderDao {
     private final DataSource dataSource;
 
-    public H2ProductDao(DataSource dataSource) {
+    public H2OrderDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<Order> getAll() {
         try (
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery("select * from PRODUCTS")
+                ResultSet rs = statement.executeQuery("select * from ORDERS")
         ) {
             if (rs == null)
                 throw new SQLException("Unable to load products");
 
-            List<Product> products = new ArrayList<>();
+            List<Order> orders = new ArrayList<>();
             while (rs.next())
-                products.add(retrieveProduct(rs));
-            return products;
+                orders.add(retrieveOrder(rs));
+            return orders;
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
     }
 
-    private Product retrieveProduct(ResultSet rs) throws SQLException {
-        return new Product(
+    private Order retrieveOrder(ResultSet rs) throws SQLException {
+        return new Order(
                 rs.getLong(1),
                 rs.getString(2),
-                rs.getInt(3),
+                rs.getString(3),
                 rs.getString(4)
         );
     }
 
     @Override
-    public Product getById(long id) {
+    public Order getById(long id) {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement("select id, name, price, comments from PRODUCTS where id = ?")
+                        .prepareStatement("select id, customerName, customerPhone, customerOrder from PRODUCTS where id = ?")
         ) {
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()) {
                 rs.next();
-                return retrieveProduct(rs);
+                return retrieveOrder(rs);
             }
         } catch (SQLException e) {
             throw new ServiceException(e);
@@ -61,26 +61,26 @@ public class H2ProductDao implements ProductDao {
     }
 
     @Override
-    public Product create(String name, int price, String comments) {
+    public Order create(String customerName, String customerPhone, String customerOrder) {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
-                        "insert into PRODUCTS (name, price, comments) values (?, ?, ?)",
+                        "insert into ORDERS (customerName, customerPhone, customerOrder) values (?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS)
         ) {
-            statement.setString(1, name);
-            statement.setInt(2, price);
-            statement.setString(3, comments);
+            statement.setString(1, customerName);
+            statement.setString(2, customerPhone);
+            statement.setString(3, customerOrder);
             int createdRows = statement.executeUpdate();
             if (createdRows != 1)
-                throw new SQLException("Unable to create product");
+                throw new SQLException("Unable to create order");
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     long id = generatedKeys.getLong(1);
-                    return new Product(id, name, price, comments);
+                    return new Order(id, customerName, customerPhone, customerOrder);
                 } else {
-                    throw new SQLException("Creating product failed, no ID obtained.");
+                    throw new SQLException("Creating order failed, no ID obtained.");
                 }
             }
         } catch (SQLException e) {
@@ -89,21 +89,21 @@ public class H2ProductDao implements ProductDao {
     }
 
     @Override
-    public void update(Product product) {
+    public void update(Order order) {
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE Products " +
-                        "SET name = ?, price = ?, comments = ?" +
+                PreparedStatement statement = connection.prepareStatement("UPDATE Orders " +
+                        "SET customerName = ?, customerPhone = ?, customerOrder = ?" +
                         "WHERE id = ?");
         ) {
-            statement.setString(1, product.getName());
-            statement.setInt(2, product.getPrice());
-            statement.setString(3, product.getComments());
-            statement.setLong(4, product.getId());
+            statement.setString(1, order.getCustomerName());
+            statement.setString(2, order.getCustomerPhone());
+            statement.setString(3, order.getCustomerOrder());
+            statement.setLong(4, order.getId());
 
             int updateRows = statement.executeUpdate();
             if (updateRows != 1)
-                throw new ServiceException("Unable to update product");
+                throw new ServiceException("Unable to update order");
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
@@ -113,13 +113,13 @@ public class H2ProductDao implements ProductDao {
     public boolean delete(long id) {
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement("DELETE from PRODUCTS " +
+                PreparedStatement statement = connection.prepareStatement("DELETE from ORDERS " +
                         "WHERE id = ?");
         ) {
             statement.setLong(1, id);
             int deletedRows = statement.executeUpdate();
             if (deletedRows != 1)
-                throw new ServiceException("Unable to delete product");
+                throw new ServiceException("Unable to delete order");
             return true;
         } catch (SQLException e) {
             throw new ServiceException(e);

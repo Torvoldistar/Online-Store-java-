@@ -24,7 +24,7 @@ public class OrderService implements IOrderService{
     }
 
     @Override
-    public Order create(String input_customerName, String input_customerPhone, List<Product> input_customerOrder) {
+    public Order create(String input_customerName, String input_customerPhone, String input_customerOrder) {
         return dao.create(input_customerName, input_customerPhone, input_customerOrder);
     }
 

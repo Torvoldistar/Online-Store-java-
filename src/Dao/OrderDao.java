@@ -10,7 +10,7 @@ public interface OrderDao {
 
     Order getById(long id);
 
-    Order create(String customerName, String customerPhone, List<Product> customerOrder);
+    Order create(String customerName, String customerPhone, String customerOrder);
 
     void update(Order order);
 

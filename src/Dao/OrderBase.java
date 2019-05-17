@@ -19,7 +19,7 @@ public enum OrderBase implements OrderDao{
     }
 
     @Override
-    public Order create(String customerName, String customerPhone, List<Product> customerOrder) {
+    public Order create(String customerName, String customerPhone, String customerOrder) {
         Order order = new Order (idGenerator.incrementAndGet(), customerName, customerPhone, customerOrder);
         allOrders.put(order.getId(), order);
         return order;

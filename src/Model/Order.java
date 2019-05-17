@@ -7,10 +7,10 @@ public class Order {
     private long id;
     private String customerName;
     private String customerPhone;
-    private List<Product> customerOrder;
+    private String customerOrder;
 
 
-    public Order(long input_id, String input_customerName, String input_customerPhone, List<Product> input_customerOrder) {
+    public Order(long input_id, String input_customerName, String input_customerPhone, String input_customerOrder) {
         this.id = input_id;
         this.customerName = input_customerName;
         this.customerPhone = input_customerPhone;
@@ -29,7 +29,7 @@ public class Order {
         return customerPhone;
     }
 
-    public List<Product> getCustomerOrder() {
+    public String getCustomerOrder() {
         return customerOrder;
     }
 
@@ -68,15 +68,8 @@ public class Order {
                 "id = " + id +
                 ", customerName = '" + customerName + '\'' +
                 ", customerPhone = '" + customerPhone + '\'' +
-                ", customerOrder = '" + OrdersToString(customerOrder) + '\'' +
+                ", customerOrder = '" + customerOrder + '\'' +
                 '}';
-    }
-    
-    private String OrdersToString(List<Product> Order)
-    {
-        String result="";
-        for (Product product:Order) result+=product.toString()+", ";
-        return result;
     }
 
 }

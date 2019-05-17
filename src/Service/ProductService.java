@@ -1,5 +1,6 @@
 package Service;
 
+import Dao.H2ProductDao;
 import Model.Product;
 import Dao.ProductBase;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public class ProductService implements IProductService {
     private final ProductBase dao;
 
-    public ProductService(ProductBase input_dao) {
+    public ProductService(H2ProductDao h2ProductDao, ProductBase input_dao) {
         this.dao = input_dao;
     }
 
