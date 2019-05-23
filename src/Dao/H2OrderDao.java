@@ -48,7 +48,7 @@ public class H2OrderDao implements OrderDao {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement("select id, customerName, customerPhone, customerOrder from PRODUCTS where id = ?")
+                        .prepareStatement("select ID, CUSTOMERNAME, CUSTOMERPHONE, CUSTOMERORDER from PRODUCTS where ID = ?")
         ) {
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()) {
@@ -65,7 +65,7 @@ public class H2OrderDao implements OrderDao {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
-                        "insert into ORDERS (customerName, customerPhone, customerOrder) values (?, ?, ?)",
+                        "insert into ORDERS (CUSTOMERNAME, CUSTOMERPHONE, CUSTOMERORDER) values (?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, customerName);
@@ -92,9 +92,9 @@ public class H2OrderDao implements OrderDao {
     public void update(Order order) {
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE Orders " +
-                        "SET customerName = ?, customerPhone = ?, customerOrder = ?" +
-                        "WHERE id = ?");
+                PreparedStatement statement = connection.prepareStatement("UPDATE ORDERS " +
+                        "SET CUSTOMERNAME = ?, CUSTOMERPHONE = ?, CUSTOMERORDER = ?" +
+                        "WHERE ID= ?");
         ) {
             statement.setString(1, order.getCustomerName());
             statement.setString(2, order.getCustomerPhone());
@@ -114,7 +114,7 @@ public class H2OrderDao implements OrderDao {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement("DELETE from ORDERS " +
-                        "WHERE id = ?");
+                        "WHERE ID = ?");
         ) {
             statement.setLong(1, id);
             int deletedRows = statement.executeUpdate();

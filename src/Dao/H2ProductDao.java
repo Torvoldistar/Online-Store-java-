@@ -48,7 +48,7 @@ public class H2ProductDao implements ProductDao {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement("select id, name, price, comments from PRODUCTS where id = ?")
+                        .prepareStatement("select ID, NAME, PRICE, COMMENTS from PRODUCTS where id = ?")
         ) {
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()) {
@@ -65,7 +65,7 @@ public class H2ProductDao implements ProductDao {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
-                        "insert into PRODUCTS (name, price, comments) values (?, ?, ?)",
+                        "insert into PRODUCTS (NAME, PRICE, COMMENTS) values (?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, name);
@@ -92,9 +92,9 @@ public class H2ProductDao implements ProductDao {
     public void update(Product product) {
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE Products " +
-                        "SET name = ?, price = ?, comments = ?" +
-                        "WHERE id = ?");
+                PreparedStatement statement = connection.prepareStatement("UPDATE PRODUCTS " +
+                        "SET NAME = ?, PRICE = ?, COMMENTS = ?" +
+                        "WHERE ID= ?");
         ) {
             statement.setString(1, product.getName());
             statement.setInt(2, product.getPrice());
@@ -114,7 +114,7 @@ public class H2ProductDao implements ProductDao {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement("DELETE from PRODUCTS " +
-                        "WHERE id = ?");
+                        "WHERE ID = ?");
         ) {
             statement.setLong(1, id);
             int deletedRows = statement.executeUpdate();

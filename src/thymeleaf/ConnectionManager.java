@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class ConnectionManager {
     public static DataSource createDataSource() throws IOException {
-        try (InputStream input = ConnectionManager.class.getClassLoader().getResourceAsStream("db.properties")) {
+        try (InputStream input = ConnectionManager.class.getClassLoader().getResourceAsStream("./resourses/db.properties")) {
             Properties dbProperties = new Properties();
             dbProperties.load(input);
 
@@ -19,4 +19,5 @@ public class ConnectionManager {
             source.setPassword(dbProperties.getProperty("db.pass"));
             return source;
         }
+    }
 }

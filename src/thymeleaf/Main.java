@@ -1,10 +1,7 @@
 package thymeleaf;
 
 import Dao.H2ProductDao;
-import Dao.OrderBase;
-import Dao.OrderDao;
 import Dao.ProductBase;
-import Dao.ProductDao;
 import Model.Product;
 import Service.ProductService;
 import exception.ServiceException;
